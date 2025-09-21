@@ -8,6 +8,8 @@ import { AuthStack } from "./src/navigation/AuthStack";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainStack } from "./src/navigation/MainStack";
 import { useFonts } from "expo-font";
+import { Provider } from "react-redux";
+import { store } from "./src/store/Store";
 
 export default function App() {
   const [fonts] = useFonts({
@@ -24,10 +26,12 @@ export default function App() {
       <SafeAreaView
         style={{ flex: 1, paddingTop: s(20), backgroundColor: "#fff" }}
       >
-        <NavigationContainer>
-          <FlashMessage position={"top"} />
-          <MainStack />
-        </NavigationContainer>
+        <Provider store={store}>
+          <NavigationContainer>
+            <FlashMessage position={"top"} />
+            <MainStack />
+          </NavigationContainer>
+        </Provider>
       </SafeAreaView>
     </SafeAreaProvider>
   );

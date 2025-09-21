@@ -4,41 +4,52 @@ import { AppColors } from "../../styles/colors";
 import AppText from "../texts/AppText";
 import { FONTS } from "../../styles/fontt";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { FC } from "react";
 
-const tempData = {
-  id: 2,
-  price: 749,
-  title: "Lenovo Laptop",
-  imageURL:
-    "https://image.made-in-china.com/318f0j00nEfGPdYIhWom/6%E6%9C%8814%E6%97%A5%287%29.mp4.webp",
-};
+interface CartItemTypes {
+  title: string;
+  price: number | string;
+  imageUrl: string;
+  qty: number | string;
+  onDeletePress: () => void;
+  onIncreasePress: () => void;
+  onReducePress: () => void;
+}
 
-const CartItem = () => {
+const CartItem: FC<CartItemTypes> = ({
+  title,
+  price,
+  imageUrl,
+  qty,
+  onDeletePress,
+  onIncreasePress,
+  onReducePress,
+}) => {
   return (
     <View style={styles.container}>
       {/* Image Container */}
       <View style={styles.imageContainer}>
-        <Image source={{ uri: tempData.imageURL }} style={styles.image} />
+        <Image source={{ uri: imageUrl }} style={styles.image} />
       </View>
       {/* Details Container */}
       <View style={styles.detailsContainer}>
-        <AppText style={styles.title}>{tempData.title}</AppText>
-        <AppText style={styles.price}>${tempData.price}</AppText>
+        <AppText style={styles.title}>{title}</AppText>
+        <AppText style={styles.price}>$ {price}</AppText>
 
         {/* quantity set */}
         <View style={styles.qty}>
-          <Pressable style={styles.iconBtn}>
+          <Pressable style={styles.iconBtn} onPress={onIncreasePress}>
             <FontAwesome name="plus" size={s(10)} color={AppColors.primary} />
           </Pressable>
-          <AppText style={styles.textQty}>1</AppText>
-          <Pressable style={styles.iconBtn}>
+          <AppText style={styles.textQty}>{qty}</AppText>
+          <Pressable style={styles.iconBtn} onPress={onReducePress}>
             <FontAwesome name="minus" size={s(10)} color={AppColors.primary} />
           </Pressable>
         </View>
       </View>
       {/* Delete Container */}
       <View style={styles.deleteContainer}>
-        <Pressable style={styles.deleteButton}>
+        <Pressable style={styles.deleteButton} onPress={onDeletePress}>
           <AntDesign name="delete" size={s(14)} color={AppColors.redColor} />
           <AppText style={styles.delete}>Delete</AppText>
         </Pressable>

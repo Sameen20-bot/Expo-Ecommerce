@@ -4,9 +4,9 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native";
-import { s } from "react-native-size-matters";
 import { AppColors } from "../../styles/colors";
 import AppText from "../texts/AppText";
+import { s, vs } from "react-native-size-matters";
 
 interface AppButtonProps {
   onPress: () => void;
