@@ -4,8 +4,11 @@ import HomeHeader from "../../components/header/HomeHeader";
 import AppText from "../../components/texts/AppText";
 import Card from "../../components/card/Card";
 import { products } from "../../data/products";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "../../store/reducers/CartSlice";
 
 const Home = () => {
+  const dispatch = useDispatch()
   return (
     <ScrollView nestedScrollEnabled>
       <HomeHeader />
@@ -18,7 +21,7 @@ const Home = () => {
             imageUrl={item.imageURL}
             title={item.title}
             price={item.price}
-            onAddToCardPress={() => {}}
+            onAddToCardPress={() => {dispatch(addItemToCart(item))}}
           />
         )}
         scrollEnabled={false}
