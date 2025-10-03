@@ -11,6 +11,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import AppTextInputController from "../../components/inputs/AppTextInputController";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../configs/firebase";
+import { showMessage } from "react-native-flash-message";
 
 const SignIn = () => {
   const schema = yup
@@ -35,8 +38,31 @@ const SignIn = () => {
 
   const navigation = useNavigation();
 
-  const onSignIn = () => {
-    navigation.navigate("BottomTabs");
+  const onSignIn = async (data: data) => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        data.Email,
+        data.Password
+      );
+      navigation.navigate("BottomTabs");
+      console.log(userCredentials);
+    } catch (error: any) {
+      let errorMessage = "";
+      console.log(error.code);
+      if (error.code === "auth/user-not-found") {
+        errorMessage = "User not found";
+      } else if (error.code === "auth/invalid-credential") {
+        errorMessage = "Wrong email or password";
+      } else {
+        errorMessage = "An error occurred during sign-in";
+      }
+
+      showMessage({
+        type: "danger",
+        message: errorMessage,
+      });
+    }
   };
 
   return (

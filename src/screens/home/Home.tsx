@@ -3,12 +3,24 @@ import { s, vs } from "react-native-size-matters";
 import HomeHeader from "../../components/header/HomeHeader";
 import AppText from "../../components/texts/AppText";
 import Card from "../../components/card/Card";
-import { products } from "../../data/products";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "../../store/reducers/CartSlice";
+import { useEffect, useState } from "react";
+import { getProductsData } from "../../configs/dataService";
 
 const Home = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const [products, setProducts] = useState([]);
+
+  const fetchData = () => {
+    const data = getProductsData();
+    setProducts(data);
+  };
+
+  useEffect(()=>{
+    fetchData()
+  },[])
+
   return (
     <ScrollView nestedScrollEnabled>
       <HomeHeader />
@@ -21,7 +33,9 @@ const Home = () => {
             imageUrl={item.imageURL}
             title={item.title}
             price={item.price}
-            onAddToCardPress={() => {dispatch(addItemToCart(item))}}
+            onAddToCardPress={() => {
+              dispatch(addItemToCart(item));
+            }}
           />
         )}
         scrollEnabled={false}

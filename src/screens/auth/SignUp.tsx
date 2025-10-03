@@ -12,6 +12,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import AppTextInputController from "../../components/inputs/AppTextInputController";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { showMessage } from "react-native-flash-message";
+import { auth } from "../../configs/firebase";
 
 const SignUp = () => {
   const schema = yup
@@ -36,9 +39,32 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSignUp = () => {
-    Alert.alert("User account created.");
-    navigation.navigate("SignIn");
+  const onSignUp = async (data: data) => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        data.Email,
+        data.Password
+      );
+      Alert.alert("User account created.");
+      navigation.navigate("BottomTabs");
+      return userCredentials.user;
+    } catch (error: any) {
+      let errorMessage = "";
+      if (error.code === "auth/email-already-in-use") {
+        errorMessage = "This email is already in use.";
+      } else if (error.code === "auth/invalid-email") {
+        errorMessage = "The email address is invalid.";
+      } else if (error.code === "auth/weak-password") {
+        errorMessage = "The password is too weak.";
+      } else {
+        errorMessage = "An error occurred during sign-up.";
+      }
+      showMessage({
+        type: "danger",
+        message: errorMessage,
+      });
+    }
   };
 
   const navigation = useNavigation();
