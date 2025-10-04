@@ -15,6 +15,8 @@ import AppTextInputController from "../../components/inputs/AppTextInputControll
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { showMessage } from "react-native-flash-message";
 import { auth } from "../../configs/firebase";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../store/reducers/UserSlice";
 
 const SignUp = () => {
   const schema = yup
@@ -39,6 +41,10 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
+  const navigation = useNavigation();
+
+  const dispatch = useDispatch();
+
   const onSignUp = async (data: data) => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(
@@ -48,7 +54,7 @@ const SignUp = () => {
       );
       Alert.alert("User account created.");
       navigation.navigate("BottomTabs");
-      return userCredentials.user;
+      dispatch(setUserData(userCredentials.user));
     } catch (error: any) {
       let errorMessage = "";
       if (error.code === "auth/email-already-in-use") {
@@ -66,8 +72,6 @@ const SignUp = () => {
       });
     }
   };
-
-  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>

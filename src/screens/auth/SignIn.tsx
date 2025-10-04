@@ -14,6 +14,8 @@ import AppTextInputController from "../../components/inputs/AppTextInputControll
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../configs/firebase";
 import { showMessage } from "react-native-flash-message";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../store/reducers/UserSlice";
 
 const SignIn = () => {
   const schema = yup
@@ -38,6 +40,8 @@ const SignIn = () => {
 
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+
   const onSignIn = async (data: data) => {
     try {
       const userCredentials = await signInWithEmailAndPassword(
@@ -47,6 +51,7 @@ const SignIn = () => {
       );
       navigation.navigate("BottomTabs");
       console.log(userCredentials);
+      dispatch(setUserData(userCredentials.user));
     } catch (error: any) {
       let errorMessage = "";
       console.log(error.code);
