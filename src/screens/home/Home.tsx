@@ -12,14 +12,14 @@ const Home = () => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
 
-  const fetchData = () => {
-    const data = getProductsData();
+  const fetchData = async () => {
+    const data = await getProductsData();
     setProducts(data);
   };
 
-  useEffect(()=>{
-    fetchData()
-  },[])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <ScrollView nestedScrollEnabled>

@@ -1,41 +1,35 @@
 import { StyleSheet, Text, View } from "react-native";
 import OrderItem from "../../components/order/OrderItem";
 import { FlatList } from "react-native-gesture-handler";
-
-const data = [
-  {
-    id: 1,
-    date: "2025-01-01",
-    totalAmount: 120.5,
-    totalPrice: "$150",
-  },
-  {
-    id: 2,
-    date: "2025-01-02",
-    totalAmount: 75.0,
-    totalPrice: "$90",
-  },
-  {
-    id: 3,
-    date: "2025-01-03",
-    totalAmount: 200.25,
-    totalPrice: "$250",
-  },
-];
+import { useEffect, useState } from "react";
+import { vs, s } from "react-native-size-matters";
+import { getOrderData } from "../../configs/dataService";
 
 const Order = () => {
+  const [orderList, setOrderList] = useState([]);
+
+  const getOrder = async () => {
+    const response = await getOrderData();
+    setOrderList(response);
+  };
+
+  useEffect(() => {
+    getOrder();
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        data={data}
+        data={orderList}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <OrderItem
-            totalAmount={item.totalAmount}
-            totalPrice={item.totalPrice}
-            date={item.date}
+            totalAmount={item.totalItemSum}
+            totalPrice={item.orderTotal}
+            date={new Date(item.createdAt.seconds * 1000).toLocaleString()}
           />
         )}
+        contentContainerStyle={{paddingBottom:s(10)}}
       />
     </View>
   );

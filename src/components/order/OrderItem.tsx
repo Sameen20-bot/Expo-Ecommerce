@@ -27,7 +27,6 @@ const OrderItem:FC<OrderItemTypes> = ({ totalAmount, totalPrice, date }) => {
           </AppText>
         </View>
         <View style={styles.row}>
-          <AppText variant="medium">Date: {date}</AppText>
           <AppText variant="medium" style={{ color: AppColors.darkBrown }}>
             {date}
           </AppText>

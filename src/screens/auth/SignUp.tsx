@@ -54,7 +54,11 @@ const SignUp = () => {
       );
       Alert.alert("User account created.");
       navigation.navigate("BottomTabs");
-      dispatch(setUserData(userCredentials.user));
+      dispatch(
+        setUserData({
+          uid: userCredentials.user.uid,
+        })
+      );
     } catch (error: any) {
       let errorMessage = "";
       if (error.code === "auth/email-already-in-use") {

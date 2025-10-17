@@ -11,8 +11,14 @@ import { useForm } from "react-hook-form";
 import AppTextInputController from "../../components/inputs/AppTextInputController";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/Store";
+import { showMessage } from "react-native-flash-message";
+import { shippingFee, taxes } from "../../constants/constant";
+import { useNavigation } from "@react-navigation/native";
+import { addDoc, collection, doc } from "firebase/firestore";
+import { db } from "../../configs/firebase";
+import { emptyCart } from "../../store/reducers/CartSlice";
 
 const schema = yup
   .object({
@@ -36,15 +42,53 @@ const schema = yup
 
 type data = yup.InferType<typeof schema>;
 
-const { userData } = useSelector((state: RootState) => state.userSlice);
-
 const CheckOutScreen = () => {
+  const dispatch = useDispatch();
+
+  const { userData } = useSelector((state: RootState) => state.userSlice);
+
+  const { items } = useSelector((state: RootState) => state.CartSlice);
+
+  const totalItemSum = items.reduce((acc, item) => acc + item.sum, 0);
+
+  const orderTotal = totalItemSum + taxes + shippingFee;
+
+  const navigation = useNavigation();
+
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const saveOrder = (data: data) => {
-    console.log(data);
+  const saveOrder = async (data: data) => {
+    try {
+      const orderData = {
+        ...data,
+        items,
+        createdAt: new Date(),
+        totalItemSum,
+        orderTotal,
+      };
+
+      const userOrderRef = collection(doc(db, "users", userData.uid), "orders");
+      await addDoc(userOrderRef, orderData);
+
+      const orderRef = collection(db, "admin");
+      await addDoc(orderRef, orderData)
+        .then(() => console.log("Admin order added"))
+        .catch((e) => console.error("Admin order failed:", e));
+
+      showMessage({
+        type: "success",
+        message: "Order placed successfully.",
+      });
+
+      navigation.goBack();
+
+      dispatch(emptyCart());
+    } catch (error) {
+      console.error("Error saving order: ", error);
+      showMessage({ type: "danger", message: "Error Happen" });
+    }
   };
 
   return (
