@@ -3,7 +3,7 @@ import { sharedPaddingHorizontal } from "../../styles/sharedStyles";
 import { IMAGES } from "../../constants/images-paths";
 import { vs, s } from "react-native-size-matters";
 import AppInput from "../../components/inputs/AppInput";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import AppText from "../../components/texts/AppText";
 import AppButton from "../../components/buttons/AppButton";
 import { AppColors } from "../../styles/colors";
@@ -17,21 +17,24 @@ import { showMessage } from "react-native-flash-message";
 import { auth } from "../../configs/firebase";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../store/reducers/UserSlice";
+import { useTranslation } from "react-i18next";
 
 const SignUp = () => {
+  const { t } = useTranslation();
+
   const schema = yup
     .object({
-      Name: yup.string().required("Name is required"),
+      Name: yup.string().required(t("sign_up_username_required")),
 
       Email: yup
         .string()
-        .email("Please enter a valid email")
-        .required("Email is required."),
+        .email(t("sign_up_email_invalid"))
+        .required(t("sign_up_email_required")),
 
       Password: yup
         .string()
-        .required("Password is required.")
-        .min(6, "Password must be atleast 6 characters."),
+        .required(t("sign_up_password_required"))
+        .min(6, t("sign_up_password_min_length")),
     })
     .required();
 
@@ -52,7 +55,7 @@ const SignUp = () => {
         data.Email,
         data.Password
       );
-      Alert.alert("User account created.");
+      Alert.alert(t("sign_up_success"));
       navigation.navigate("BottomTabs");
       dispatch(
         setUserData({
@@ -62,13 +65,13 @@ const SignUp = () => {
     } catch (error: any) {
       let errorMessage = "";
       if (error.code === "auth/email-already-in-use") {
-        errorMessage = "This email is already in use.";
+        errorMessage = t("sign_up_error_email_in_use");
       } else if (error.code === "auth/invalid-email") {
-        errorMessage = "The email address is invalid.";
+        errorMessage = t("sign_up_error_invalid_email");
       } else if (error.code === "auth/weak-password") {
-        errorMessage = "The password is too weak.";
+        errorMessage = t("sign_up_error_weak_password");
       } else {
-        errorMessage = "An error occurred during sign-up.";
+        errorMessage = t("sign_up_error_default");
       }
       showMessage({
         type: "danger",
@@ -83,22 +86,25 @@ const SignUp = () => {
       <AppTextInputController
         name="Name"
         control={control}
-        placeholder="Enter Your Name"
+        placeholder={t("sign_up_username_placeholder")}
       />
       <AppTextInputController
         name="Email"
         control={control}
-        placeholder="Enter Email Address"
+        placeholder={t("sign_up_email_placeholder")}
       />
       <AppTextInputController
         name="Password"
         control={control}
-        placeholder="Enter Password"
+        placeholder={t("sign_up_password_placeholder")}
       />
       <AppText style={styles.text}>Smart E-commerce App</AppText>
-      <AppButton title="Create New Account" onPress={handleSubmit(onSignUp)} />
       <AppButton
-        title="Go To Sign In"
+        title={t("sign_up_create_account_button")}
+        onPress={handleSubmit(onSignUp)}
+      />
+      <AppButton
+        title={t("sign_up_goto_signin_button")}
         style={styles.signinButton}
         textColor={AppColors.primary}
         onPress={() => navigation.navigate("SignIn")}

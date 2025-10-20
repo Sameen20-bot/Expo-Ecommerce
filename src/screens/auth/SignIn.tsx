@@ -16,19 +16,22 @@ import { auth } from "../../configs/firebase";
 import { showMessage } from "react-native-flash-message";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../store/reducers/UserSlice";
+import { useTranslation } from "react-i18next";
 
 const SignIn = () => {
+  const { t } = useTranslation();
+
   const schema = yup
     .object({
       Email: yup
         .string()
-        .email("Please enter a valid email")
-        .required("Email is required."),
+        .email(t("sign_in_email_invalid"))
+        .required(t("sign_in_email_required")),
 
       Password: yup
         .string()
-        .required("Password is required.")
-        .min(6, "Password must be atleast 6 characters."),
+        .required(t("sign_in_password_required"))
+        .min(6, t("sign_in_password_min_length")),
     })
     .required();
 
@@ -60,11 +63,11 @@ const SignIn = () => {
       let errorMessage = "";
       console.log(error.code);
       if (error.code === "auth/user-not-found") {
-        errorMessage = "User not found";
+        errorMessage = t("sign_in_error_user_not_found");
       } else if (error.code === "auth/invalid-credential") {
-        errorMessage = "Wrong email or password";
+        errorMessage = t("sign_in_error_invalid_credential");
       } else {
-        errorMessage = "An error occurred during sign-in";
+        errorMessage = t("sign_in_error_default");
       }
 
       showMessage({
@@ -80,17 +83,20 @@ const SignIn = () => {
       <AppTextInputController
         name="Email"
         control={control}
-        placeholder="Enter Email Address"
+        placeholder={t("sign_in_email_placeholder")}
       />
       <AppTextInputController
         name="Password"
         control={control}
-        placeholder="Enter Password"
+        placeholder={t("sign_in_password_placeholder")}
       />
       <AppText style={styles.text}>Smart E-commerce App</AppText>
-      <AppButton title="Login" onPress={handleSubmit(onSignIn)} />
       <AppButton
-        title="Sign Up"
+        title={t("sign_in_login_button")}
+        onPress={handleSubmit(onSignIn)}
+      />
+      <AppButton
+        title={t("sign_in_signup_button")}
         style={styles.registerButton}
         textColor={AppColors.primary}
         onPress={() => navigation.navigate("SignUp")}

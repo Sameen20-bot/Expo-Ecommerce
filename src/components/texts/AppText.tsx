@@ -28,6 +28,7 @@ const AppText: FC<AppTextProps> = ({
     </Text>
   );
 };
+
 export default AppText;
 const styles = StyleSheet.create({
   medium: {

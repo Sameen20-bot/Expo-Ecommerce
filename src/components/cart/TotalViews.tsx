@@ -6,6 +6,7 @@ import { AppColors } from "../../styles/colors";
 import { sharedPaddingHorizontal } from "../../styles/sharedStyles";
 import { FC } from "react";
 import { shippingFee, taxes } from "../../constants/constant";
+import { useTranslation } from "react-i18next";
 
 interface TotalViewsTypes {
   itemsPrice: number | string;
@@ -13,6 +14,8 @@ interface TotalViewsTypes {
 }
 
 const TotalViews: FC<TotalViewsTypes> = ({ itemsPrice, totalPrice }) => {
+  const { t } = useTranslation();
+
   return (
     <View
       style={{
@@ -21,21 +24,29 @@ const TotalViews: FC<TotalViewsTypes> = ({ itemsPrice, totalPrice }) => {
       }}
     >
       <View style={styles.row}>
-        <AppText style={styles.text}>Items Price:</AppText>
-        <AppText style={styles.price}>${itemsPrice}</AppText>
+        <AppText style={styles.text}>{t("totals_items_price")}</AppText>
+        <AppText style={styles.price}>
+          {t("totals_currency")} {itemsPrice}
+        </AppText>
       </View>
       <View style={styles.row}>
-        <AppText style={styles.text}>Taxes:</AppText>
-        <AppText style={styles.price}>${taxes}</AppText>
+        <AppText style={styles.text}>{t("totals_taxes")}</AppText>
+        <AppText style={styles.price}>
+          {t("totals_currency")} {taxes}
+        </AppText>
       </View>
       <View style={styles.row}>
-        <AppText style={styles.text}>Shipping Fee:</AppText>
-        <AppText style={styles.price}>${shippingFee}</AppText>
+        <AppText style={styles.text}>{t("totals_shipping_fee")}</AppText>
+        <AppText style={styles.price}>
+          {t("totals_currency")} {shippingFee}
+        </AppText>
       </View>
       <View style={styles.separator} />
       <View style={styles.row}>
-        <AppText style={styles.text}>Total Order:</AppText>
-        <AppText style={styles.price}>${totalPrice}</AppText>
+        <AppText style={styles.text}>{t("totals_order_total")}</AppText>
+        <AppText style={styles.price}>
+          {t("totals_currency")} {totalPrice}
+        </AppText>
       </View>
     </View>
   );

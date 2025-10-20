@@ -7,6 +7,7 @@ import {
   sharedPaddingHorizontal,
 } from "../../styles/sharedStyles";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface OrderItemTypes {
   totalAmount: number | string;
@@ -14,16 +15,21 @@ interface OrderItemTypes {
   date: number | string;
 }
 
-const OrderItem:FC<OrderItemTypes> = ({ totalAmount, totalPrice, date }) => {
+const OrderItem: FC<OrderItemTypes> = ({ totalAmount, totalPrice, date }) => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.screen}>
       <View style={styles.container}>
-        <AppText variant="medium">ORDER DETAILS:</AppText>
+        <AppText variant="medium">{t("order_details_title")}</AppText>
         <View style={styles.separator} />
         <View style={styles.row}>
-          <AppText variant="medium">Total Price: {totalPrice}</AppText>
+          <AppText variant="medium">
+            {" "}
+            {t("order_total_price")} {totalPrice}
+          </AppText>
           <AppText variant="medium" style={{ color: AppColors.darkBrown }}>
-            {totalAmount}$
+            {totalAmount} {t("order_total_price")}
           </AppText>
         </View>
         <View style={styles.row}>

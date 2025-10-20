@@ -14,8 +14,12 @@ import {
   removeItemToCart,
 } from "../../store/reducers/CartSlice";
 import { shippingFee, taxes } from "../../constants/constant";
+import { useTranslation } from "react-i18next";
 
 const Cart = () => {
+  
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
 
   const { items } = useSelector((state: RootState) => state.CartSlice);
@@ -48,7 +52,7 @@ const Cart = () => {
           />
           <TotalViews itemsPrice={totalItemSum} totalPrice={orderTotal} />
           <AppButton
-            title="Continue"
+            title={t("cart_continue_button")}
             style={{ width: "90%" }}
             onPress={() => navigation.navigate("Check Out Screen")}
           />

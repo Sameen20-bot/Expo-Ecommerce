@@ -1,4 +1,6 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import i18n from "./src/localization/i18n";
+import { I18nextProvider } from "react-i18next";
+import { ActivityIndicator } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import FlashMessage from "react-native-flash-message";
 import { s } from "react-native-size-matters";
@@ -19,17 +21,19 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
-      <SafeAreaProvider>
-        <SafeAreaView
-          style={{ flex: 1, paddingTop: s(20), backgroundColor: "#fff" }}
-        >
-          <NavigationContainer>
-            <FlashMessage position="top" />
-            <MainStack />
-          </NavigationContainer>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </Provider>
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <SafeAreaView
+            style={{ flex: 1, paddingTop: s(20), backgroundColor: "#fff" }}
+          >
+            <NavigationContainer>
+              <FlashMessage position="top" />
+              <MainStack />
+            </NavigationContainer>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </Provider>
+    </I18nextProvider>
   );
 }
