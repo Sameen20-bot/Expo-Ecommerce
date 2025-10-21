@@ -7,8 +7,9 @@ import { s } from "react-native-size-matters";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Provider } from "react-redux";
-import { store } from "./src/store/Store";
+import { persister, store } from "./src/store/Store";
 import { MainStack } from "./src/navigation/MainStack";
+import { PersistGate } from "redux-persist/integration/react";
 
 export default function App() {
   const [fonts] = useFonts({
@@ -23,16 +24,18 @@ export default function App() {
   return (
     <I18nextProvider i18n={i18n}>
       <Provider store={store}>
-        <SafeAreaProvider>
-          <SafeAreaView
-            style={{ flex: 1, paddingTop: s(20), backgroundColor: "#fff" }}
-          >
-            <NavigationContainer>
-              <FlashMessage position="top" />
-              <MainStack />
-            </NavigationContainer>
-          </SafeAreaView>
-        </SafeAreaProvider>
+        <PersistGate persistor={persister}>
+          <SafeAreaProvider>
+            <SafeAreaView
+              style={{ flex: 1, paddingTop: s(20), backgroundColor: "#fff" }}
+            >
+              <NavigationContainer>
+                <FlashMessage position="top" />
+                <MainStack />
+              </NavigationContainer>
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </PersistGate>
       </Provider>
     </I18nextProvider>
   );

@@ -30,7 +30,7 @@ const Profile = () => {
         index: 0,
         routes: [{ name: "AuthStack" }],
       });
-      await signOut(auth)
+      await signOut(auth);
     } catch (error) {
       console.log("Error removing user data: ", error);
     }
@@ -39,7 +39,6 @@ const Profile = () => {
   return (
     <View style={{ backgroundColor: AppColors.white, flex: 1 }}>
       <HomeHeader />
-      <AppText style={styles.text}>Hello, Sameen Zaki</AppText>
       <View style={{ paddingHorizontal: sharedPaddingHorizontal }}>
         <ProfileSectionButton
           title={t("profile_my_orders")}

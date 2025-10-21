@@ -1,6 +1,5 @@
 import { collection, doc, getDocs } from "firebase/firestore";
 import { auth, db } from "./firebase";
-import { store } from "../store/Store";
 
 export const getProductsData = async () => {
   try {
@@ -19,7 +18,7 @@ export const getProductsData = async () => {
 
 export const getOrderData = async () => {
   try {
-    const userIdFromRedux = store.getState().userSlice.userData.uid;
+    // const userIdFromRedux = store.getState().userSlice.userData.uid;
     const userIdFromFireBase = auth.currentUser?.uid;
     const userOrderRef = collection(
       doc(db, "users", userIdFromFireBase),
@@ -36,3 +35,4 @@ export const getOrderData = async () => {
     console.error("Error Fetching Data: ", error);
   }
 };
+ 

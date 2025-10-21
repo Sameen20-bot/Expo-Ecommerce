@@ -16,7 +16,6 @@ import { auth } from "../configs/firebase";
 const Stack = createStackNavigator();
 
 export const MainStack = () => {
-  
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [userData, setUserData] = useState<object | null>(null);
@@ -48,7 +47,7 @@ export const MainStack = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (userDataFromFirebase) => {
-      if (userData) {
+      if (userDataFromFirebase) {
         console.log("User is signed in.");
         setUserData(userDataFromFirebase);
         setIsLoading(false);
