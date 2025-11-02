@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: vs(10),
     paddingHorizontal: vs(10),
+    marginBottom: vs(30),
   },
   text: {
     textAlign: "center",

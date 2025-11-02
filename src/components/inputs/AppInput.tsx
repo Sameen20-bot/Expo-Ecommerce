@@ -24,6 +24,7 @@ const AppInput: FC<AppInputTypes> = ({
     <TextInput
       value={value}
       placeholder={placeholder}
+      placeholderTextColor={AppColors.medGray}
       onChangeText={onChangeText}
       secureTextEntry={secureTextEntry}
       keyboardType={keyboardType}

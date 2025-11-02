@@ -6,6 +6,7 @@ import { FONTS } from "../../styles/fontt";
 import { Ionicons } from "@expo/vector-icons";
 import { shadowStyle } from "../../styles/sharedStyles";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CardTypes {
   onAddToCardPress: () => void;
@@ -15,6 +16,8 @@ interface CardTypes {
 }
 
 const Card: FC<CardTypes> = ({ onAddToCardPress, imageUrl, title, price }) => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       {/* Card Button */}
@@ -34,7 +37,9 @@ const Card: FC<CardTypes> = ({ onAddToCardPress, imageUrl, title, price }) => {
       {/* Details Ui */}
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>{title}</AppText>
-        <AppText style={styles.price}>{price}</AppText>
+        <AppText style={styles.price}>
+          {t("totals_currency")} {price}
+        </AppText>
       </View>
     </View>
   );

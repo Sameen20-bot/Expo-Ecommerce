@@ -14,7 +14,7 @@ interface OrderItemTypes {
   totalPrice: number | string;
   date: number | string;
 }
-
+s;
 const OrderItem: FC<OrderItemTypes> = ({ totalAmount, totalPrice, date }) => {
   const { t } = useTranslation();
 
@@ -26,10 +26,10 @@ const OrderItem: FC<OrderItemTypes> = ({ totalAmount, totalPrice, date }) => {
         <View style={styles.row}>
           <AppText variant="medium">
             {" "}
-            {t("order_total_price")} {totalPrice}
+            {t("order_total_price")} {t("totals_currency")} {totalPrice}
           </AppText>
           <AppText variant="medium" style={{ color: AppColors.darkBrown }}>
-            {totalAmount} {t("order_total_price")}
+            {t("totals_currency")} {totalAmount} {t("order_total_price")}
           </AppText>
         </View>
         <View style={styles.row}>

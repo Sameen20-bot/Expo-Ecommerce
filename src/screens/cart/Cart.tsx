@@ -15,9 +15,9 @@ import {
 } from "../../store/reducers/CartSlice";
 import { shippingFee, taxes } from "../../constants/constant";
 import { useTranslation } from "react-i18next";
+import { vs, s } from "react-native-size-matters";
 
 const Cart = () => {
-  
   const { t } = useTranslation();
 
   const navigation = useNavigation();
@@ -53,7 +53,7 @@ const Cart = () => {
           <TotalViews itemsPrice={totalItemSum} totalPrice={orderTotal} />
           <AppButton
             title={t("cart_continue_button")}
-            style={{ width: "90%" }}
+            style={{ width: "90%", marginBottom: s(10) }}
             onPress={() => navigation.navigate("Check Out Screen")}
           />
         </>

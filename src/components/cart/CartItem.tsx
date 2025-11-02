@@ -5,6 +5,7 @@ import AppText from "../texts/AppText";
 import { FONTS } from "../../styles/fontt";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CartItemTypes {
   title: string;
@@ -25,6 +26,8 @@ const CartItem: FC<CartItemTypes> = ({
   onIncreasePress,
   onReducePress,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       {/* Image Container */}
@@ -34,7 +37,9 @@ const CartItem: FC<CartItemTypes> = ({
       {/* Details Container */}
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>{title}</AppText>
-        <AppText style={styles.price}>$ {price}</AppText>
+        <AppText style={styles.price}>
+          {t("totals_currency")} {price}
+        </AppText>
 
         {/* quantity set */}
         <View style={styles.qty}>
